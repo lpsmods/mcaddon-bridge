@@ -147,7 +147,6 @@ export class Packet {
     data: PacketData,
     timeout: number = 20,
   ): Promise<any> {
-    // console.info(`Sending packet ${identifier} with data ${ data.toString()}`);
     const pId = `packet:${system.currentTick}`;
     const payload = JSON.stringify({
       headers: { id: identifier, type: "request" },

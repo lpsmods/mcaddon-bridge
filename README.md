@@ -73,16 +73,22 @@ Use the API from a different pack.
 import { world } from "@minecraft/server";
 import { connect } from "@lpsmods/mcaddon-bridge";
 
-// Connect to the api
-const myPack = connect("com.example.myPack");
+function worldLoad() {
+  // Connect to the api
+  const myPack = connect("com.example.myPack");
 
-console.warn(myPack.get(world, "name"));
-myPack.set(world, "name", "Bob");
-console.warn(myPack.get(world, "name"));
+  console.warn(myPack.get(world, "name"));
+  myPack.set(world, "name", "Bob");
+  console.warn(myPack.get(world, "name"));
 
-console.warn(myPack.get(world, "fullName"));
-myPack.set(world, "fullName", "Steve Black");
-console.warn(myPack.get(world, "fullName"));
+  console.warn(myPack.get(world, "fullName"));
+  myPack.set(world, "fullName", "Steve Black");
+  console.warn(myPack.get(world, "fullName"));
 
-myPack.call(world, "greet", "Alex");
+  myPack.call(world, "greet", "Alex");
+}
+
+world.afterEvents.worldLoad.subscribe(worldLoad);
 ```
+
+> Not associated with or approved by Mojang Studios or Microsoft

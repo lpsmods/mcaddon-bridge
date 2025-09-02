@@ -17,6 +17,9 @@
     "type": "git",
     "url": "https://github.com/lpsmods/mcaddon-bridge"
   },
+  "bugs": {
+    "url": "https://github.com/lpsmods/mcaddon-bridge/issues"
+  },
   "keywords": [
     "minecraft",
     "bedrock",

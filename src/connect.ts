@@ -1,21 +1,20 @@
-import { Player } from "@minecraft/server";
+import { Player, system } from "@minecraft/server";
 import { bridgeObject } from "./bridge";
 import { Packet, PacketData } from "./packet";
 import { uuid } from "./utils";
 
 export class Connection {
-  addonId: string;
+  readonly addonId: string;
 
   constructor(addonId: string) {
     this.addonId = addonId;
   }
 
-  // TODO: Block script until the addon is available
   /**
    * Pings the addon to check if it is available.
    * @returns {Promise<void>}
    */
-  async connect(): Promise<void> {
+  async connect(): Promise<Connection | undefined> {
     return new Promise((resolve, reject) => {
       const id = `bridge:${uuid()}`;
       const data = new PacketData();
@@ -23,14 +22,15 @@ export class Connection {
       data.set("addon", this.addonId);
       Packet.send(id, data)
         .then((res) => {
-          if (res.get("error")) reject(res.get("message"));
-          resolve(res.get("message"));
+          if (res.get("error")) reject(undefined);
+          resolve(this);
         })
-        .catch(reject);
+        .catch((res) => {
+          resolve(undefined);
+        });
     });
   }
 
-  // TODO: Open UI documentation
   async docs(player: Player): Promise<void> {
     return new Promise((resolve, reject) => {
       const id = `bridge:${uuid()}`;
@@ -162,16 +162,9 @@ export class Connection {
 /**
  * Connect to an addon.
  * @param {string} addonId
- * @returns {Connection}
+ * @returns {Promise<Connection|undefined>}
  */
-export function connect(addonId: string): Promise<Connection> {
-  return new Promise((resolve, reject) => {
-    const c = new Connection(addonId);
-    // system.run(() => {
-    //   c.ping();
-    // });
-    console.warn("CONNECT");
-
-    resolve(c);
-  });
+export function connect(addonId: string): Promise<Connection | undefined> {
+  const c = new Connection(addonId);
+  return c.connect();
 }

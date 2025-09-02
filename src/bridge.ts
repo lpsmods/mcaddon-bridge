@@ -48,7 +48,7 @@ export class Bridge {
   static readonly all = new Map<string, Bridge>();
 
   private objects = new Map<string, Map<string, BridgeDescriptor>>();
-  addonId: string;
+  readonly addonId: string;
   version: string;
   description?: string | RawMessage;
 
@@ -85,6 +85,12 @@ export class Bridge {
 
   private onReceive_connect(event: PacketReceiveEvent, data: PacketData): void {
     const rData = new PacketData();
+    if (this.addonId !== data.get("addon")) {
+      rData.set("error", true);
+      rData.set("message", "Not found!");
+      event.response = rData;
+      return;
+    }
     rData.set("error", false);
     rData.set("message", "Connected!");
     event.response = rData;
@@ -117,7 +123,8 @@ export class Bridge {
       event.response = rData;
       return;
     }
-    console.warn("OBJECT!");
+    rData.set("message", `Unsupported object ${arg1}`);
+    event.response = rData;
   }
 
   private onReceive_set(event: PacketReceiveEvent, data: PacketData): void {
@@ -157,7 +164,8 @@ export class Bridge {
       event.response = rData;
       return;
     }
-    console.warn("OBJECT!");
+    rData.set("message", `Unsupported object ${arg1}`);
+    event.response = rData;
   }
 
   private onReceive_has(event: PacketReceiveEvent, data: PacketData): void {
