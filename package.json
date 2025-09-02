@@ -1,0 +1,39 @@
+{
+  "name": "@lpsmods/mcaddon-bridge",
+  "version": "0.0.1",
+  "author": "legopitstop",
+  "license": "MIT",
+  "description": "A package to communicate between Minecraft Add-Ons.",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "copy1": "xcopy \"dist\" \"%localappdata%\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\LocalState\\games\\com.mojang\\development_behavior_packs\\test_bridge1_BP\\scripts\\mcaddon-bridge\" /s /y /I",
+    "copy2": "xcopy \"dist\" \"%localappdata%\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\LocalState\\games\\com.mojang\\development_behavior_packs\\test_bridge2_BP\\scripts\\mcaddon-bridge\" /s /y /I",
+    "rebuild": "npm run build && npm run copy1 && npm run copy2 && echo Done!",
+    "dev": "chokidar \"src/**/*\" -c \"npm run rebuild\" -d"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lpsmods/mcaddon-bridge"
+  },
+  "keywords": [
+    "minecraft",
+    "bedrock",
+    "utils",
+    "addons",
+    "scripting",
+    "api"
+  ],
+  "dependencies": {
+    "@minecraft/math": "^2.2.6",
+    "@minecraft/server": "^2.1.0",
+    "@minecraft/server-ui": "^2.0.0",
+    "chokidar-cli": "^3.0.0",
+    "esbuild": "^0.25.4",
+    "glob": "^11.0.3"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.0"
+  }
+}
